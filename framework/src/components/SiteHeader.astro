@@ -1,5 +1,6 @@
 ---
 import NavigationList from './NavigationList.astro';
+import { withBasePath } from '../site-path';
 
 interface NavigationItem {
   href: string;
@@ -37,12 +38,12 @@ const {
   <div class="site-header__inner">
     <a
       class="site-header__brand"
-      href={homeHref}
+      href={withBasePath(homeHref)}
       aria-label={homeLinkLabel}
       data-home-link
     >
       <img
-        src={logo.src}
+        src={withBasePath(logo.src)}
         alt={logo.alt}
         width={logo.intrinsicWidth}
         height={logo.intrinsicHeight}

@@ -1,3 +1,5 @@
 ---
-return Astro.redirect('/frc/', 301);
+import { withBasePath } from '../site-path';
+
+return Astro.redirect(withBasePath('/frc/'), 301);
 ---

@@ -1,3 +1,5 @@
+import { withBasePath } from './site-path';
+
 export const sitePagePlan = [
   { id: 'about-frc', contentId: 'frc', href: '/frc/', order: 1 },
   { id: 'about-xplore', contentId: 'xplore', href: '/xplore/', order: 2 },
@@ -18,7 +20,7 @@ export function buildSiteNavigationItems(
   context: SiteNavigationContext,
 ) {
   return sitePagePlan.map(({ href, id }) => ({
-    href,
+    href: withBasePath(href),
     label: labels[id],
     isCurrent: context === id,
   }));
@@ -27,5 +29,7 @@ export function buildSiteNavigationItems(
 export function resolveLegacySectionRoute(hash: string): string | undefined {
   const normalizedHash = hash.startsWith('#') ? hash.slice(1) : hash;
 
-  return sitePagePlan.find(({ id }) => id === normalizedHash)?.href;
+  const href = sitePagePlan.find(({ id }) => id === normalizedHash)?.href;
+
+  return href === undefined ? undefined : withBasePath(href);
 }

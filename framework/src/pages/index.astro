@@ -4,6 +4,7 @@ import { getCollection, getEntry } from 'astro:content';
 import HomePage from '../components/HomePage.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { sitePagePlan } from '../site-structure';
+import { withBasePath } from '../site-path';
 
 const [siteEntry, pageEntries] = await Promise.all([
   getEntry('site', 'site'),
@@ -22,7 +23,7 @@ const pages = sitePagePlan.map((plan) => {
     throw new Error(`The ${plan.contentId} page content is missing or assigned to the wrong navigation item.`);
   }
 
-  return { id: plan.id, href: plan.href, page: entry.data };
+  return { id: plan.id, href: withBasePath(plan.href), page: entry.data };
 });
 const site = siteEntry.data;
 ---
