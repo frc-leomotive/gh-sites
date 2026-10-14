@@ -31,7 +31,7 @@ GHFRC 官網是公開的網站程式碼庫，也是可重用的網站範本。�
 | `preview` | <https://frc-leomotive.github.io/gh-sites/preview/> |
 | `template` | <https://frc-leomotive.github.io/gh-sites/template/> |
 
-`stable` 網站直接部署在 Pages 根路徑，`/gh-sites/stable/` 作為別名保留。單一工作流 `.github/workflows/deploy-github-pages.yml`（三個分支保持同一份檔案）會在每次推送時重新構建全部三個網站並統一發佈。框架內部連結、媒體和 favicon 路徑都會經過配置的 Astro base 路徑解析，因此同一份原始碼在域名根路徑和子路徑下都能正確呈現。
+`stable` 網站直接部署在 Pages 根路徑（`/gh-sites/stable/` 作為別名保留），並鏡像正式官網：工作流使用 `release/pages-production` 框架與私有內容倉庫中 GHFRC 的真實內容構建。`preview` 和 `template` 部署展示各自分支的可替換示例內容。單一工作流 `.github/workflows/deploy-github-pages.yml`（三個分支保持同一份檔案）會在每次推送時重新構建全部三個網站並統一發佈。框架內部連結、媒體和 favicon 路徑都會經過配置的 Astro base 路徑解析，因此同一份原始碼在域名根路徑和子路徑下都能正確呈現。
 
 正式官網 `https://ghfrc.pages.dev`（自訂域名 `ghfrc.org`）另行構建：私有內容倉庫中的受信任 GitHub Actions 工作流會將最新公開 `stable` 框架與最新私有 `stable` 內容組合構建，然後僅將產生的靜態產物上載至 Cloudflare Pages。公開 `stable` 更新時會安全觸發該私有工作流，私有 `stable` 更新時則會直接啟動該工作流。
 
