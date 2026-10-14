@@ -60,7 +60,7 @@ jobs:
         run: |
           npm ci
           npm run prepare:content
-          npm --workspace @gh-frc/framework run build -- --base /gh-sites/stable/
+          npm --workspace @gh-frc/framework run build -- --base /gh-sites/
 
       - name: Build preview website
         working-directory: source/preview
@@ -80,30 +80,10 @@ jobs:
       - name: Assemble combined website
         run: |
           mkdir -p site
+          cp -r source/stable/framework/dist/. site/
           cp -r source/stable/framework/dist site/stable
           cp -r source/preview/framework/dist site/preview
           cp -r source/template/framework/dist site/template
-          cat > site/index.html <<'HTML'
-          <!doctype html>
-          <html lang="zh-CN">
-            <head>
-              <meta charset="utf-8" />
-              <meta name="viewport" content="width=device-width, initial-scale=1" />
-              <meta name="robots" content="noindex" />
-              <title>GHFRC 站点导航</title>
-            </head>
-            <body>
-              <main>
-                <h1>GHFRC 站点导航</h1>
-                <ul>
-                  <li><a href="/gh-sites/stable/">stable（稳定版）</a></li>
-                  <li><a href="/gh-sites/preview/">preview（预览版）</a></li>
-                  <li><a href="/gh-sites/template/">template（模板）</a></li>
-                </ul>
-              </main>
-            </body>
-          </html>
-          HTML
 
       - name: Upload website artifact
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
