@@ -19,17 +19,27 @@ permissions:
 
 jobs:
   build:
-    name: Build stable, preview, and template websites
+    name: Build production, preview, and template websites
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
-      - name: Check out stable branch
+      - name: Check out production website framework
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: stable
-          path: source/stable
+          ref: release/pages-production
+          path: source/site
           persist-credentials: false
+
+      - name: Check out private production content
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          repository: frc-leomotive/gh-sites-content
+          ref: production
+          path: source/site-content
+          token: ${{ secrets.PRIVATE_DEPLOYMENT_TRIGGER_TOKEN }}
+          persist-credentials: false
+          lfs: false
 
       - name: Check out preview branch
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -48,18 +58,22 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          node-version-file: source/stable/.node-version
+          node-version-file: source/site/.node-version
           cache: npm
           cache-dependency-path: |
-            source/stable/package-lock.json
+            source/site/package-lock.json
             source/preview/package-lock.json
             source/template/package-lock.json
 
-      - name: Build stable website
-        working-directory: source/stable
+      - name: Build production website
+        working-directory: source/site
+        env:
+          GH_FRC_CONTENT_DIR: ../site-content
         run: |
           npm ci
           npm run prepare:content
+          npm run check:translations
+          npm run check --workspaces --if-present
           npm --workspace @gh-frc/framework run build -- --base /gh-sites/
 
       - name: Build preview website
@@ -80,8 +94,9 @@ jobs:
       - name: Assemble combined website
         run: |
           mkdir -p site
-          cp -r source/stable/framework/dist/. site/
-          cp -r source/stable/framework/dist site/stable
+          cp -r source/site/framework/dist/. site/
+          rm -rf site/stable
+          cp -r source/site/framework/dist site/stable
           cp -r source/preview/framework/dist site/preview
           cp -r source/template/framework/dist site/template
 
