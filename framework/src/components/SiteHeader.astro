@@ -1,5 +1,6 @@
 ---
 import type { HomeNavigationItem } from '../navigation';
+import { resolveContentPath } from '../paths';
 
 interface Props {
   logo: {
@@ -34,7 +35,7 @@ const {
       data-home-link
     >
       <img
-        src={logo.src}
+        src={resolveContentPath(logo.src)}
         alt={logo.alt}
         width={logo.intrinsicWidth}
         height={logo.intrinsicHeight}
