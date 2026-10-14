@@ -1,4 +1,5 @@
 import type { Locale } from './i18n/locales';
+import { withBasePath } from './site-path';
 
 export const sitePagePlan = [
   { id: 'about-frc', contentId: 'frc', order: 1, showOnHome: true },
@@ -36,7 +37,7 @@ export function buildSiteNavigationItems(
 }
 
 export function localizedPageHref(locale: Locale, contentId: SiteContentId) {
-  return `/${locale}/${contentId}/`;
+  return withBasePath(`/${locale}/${contentId}/`);
 }
 
 export function resolveLegacySectionRoute(
@@ -52,5 +53,5 @@ export function resolveLegacySectionRoute(
 
   return locale
     ? localizedPageHref(locale, plan.contentId)
-    : `/${plan.contentId}/`;
+    : withBasePath(`/${plan.contentId}/`);
 }

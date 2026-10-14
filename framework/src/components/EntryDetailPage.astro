@@ -1,5 +1,6 @@
 ---
 import MediaFrame from './MediaFrame.astro';
+import { withBasePath } from '../site-path';
 
 interface MediaReference {
   src: string;
@@ -45,9 +46,9 @@ const {
 
 <main class="entry-detail" id="main-content">
   <nav class="site-page__breadcrumb" aria-label={breadcrumbLabel} lang={breadcrumbLanguage}>
-    <a href={homeHref}>{homeLabel}</a>
+    <a href={withBasePath(homeHref)}>{homeLabel}</a>
     <span aria-hidden="true">/</span>
-    <a href={sectionHref}>{sectionLabel}</a>
+    <a href={withBasePath(sectionHref)}>{sectionLabel}</a>
     <span aria-hidden="true">/</span>
     <span aria-current="page" lang={contentLanguage}>{title}</span>
   </nav>

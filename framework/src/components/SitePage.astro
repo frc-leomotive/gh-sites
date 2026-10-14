@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { withBasePath } from '../site-path';
 
 import type { PageContent } from '../content-schema';
 import type { Locale } from '../i18n/locales';
@@ -79,7 +80,7 @@ const fallbackGroupLanguage = (prefix: string) => (
     aria-label={breadcrumbLabel}
     lang={breadcrumbLanguage}
   >
-    <a href={`/${locale}/`} lang={homeLabelLanguage}>{homeLabel}</a>
+    <a href={withBasePath(`/${locale}/`)} lang={homeLabelLanguage}>{homeLabel}</a>
     <span aria-hidden="true">/</span>
     <span aria-current="page" lang={fieldLanguage('hero.title')}>{page.hero.title}</span>
   </nav>
@@ -174,7 +175,7 @@ const fallbackGroupLanguage = (prefix: string) => (
                 <p class="page-eyebrow">{robot.data.season}</p>
                 <h2>{robot.data.title}</h2>
                 <p>{robot.data.summary}</p>
-                <a class="text-link" href={`/${locale}/robots/${robot.id}/`}>
+                <a class="text-link" href={withBasePath(`/${locale}/robots/${robot.id}/`)}>
                   <span>{detailLinkLabel}</span>
                   <span aria-hidden="true">↗</span>
                 </a>
@@ -254,7 +255,7 @@ const fallbackGroupLanguage = (prefix: string) => (
                   </time>
                   <h2>{article.data.title}</h2>
                   <p>{article.data.summary}</p>
-                  <a class="text-link" href={`/${locale}/news/${article.id}/`}>
+                  <a class="text-link" href={withBasePath(`/${locale}/news/${article.id}/`)}>
                     <span>{detailLinkLabel}</span>
                     <span aria-hidden="true">↗</span>
                   </a>
@@ -285,7 +286,7 @@ const fallbackGroupLanguage = (prefix: string) => (
                   {method.label}
                 </dt>
                 <dd lang={fieldLanguage(`contactMethods[id=${method.id}].value`)}>
-                  {method.href ? <a href={method.href}>{method.value}</a> : method.value}
+                  {method.href ? <a href={withBasePath(method.href)}>{method.value}</a> : method.value}
                 </dd>
               </div>
             ))}

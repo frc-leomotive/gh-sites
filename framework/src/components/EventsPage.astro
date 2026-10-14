@@ -1,5 +1,6 @@
 ---
 import type { EventContent, SiteContent } from '../content-schema';
+import { withBasePath } from '../site-path';
 import type { Locale } from '../i18n/locales';
 import { getEventStatus } from '../scripts/event-status';
 import EventCard from './EventCard.astro';
@@ -42,7 +43,7 @@ const pastEvents = sortedEvents.filter(
 
 <main class="events-page" id="main-content" data-event-archive>
   <nav class="site-page__breadcrumb" aria-label={breadcrumbLabel} lang={breadcrumbLanguage}>
-    <a href={`/${locale}/`} lang={homeLabelLanguage}>{homeLabel}</a>
+    <a href={withBasePath(`/${locale}/`)} lang={homeLabelLanguage}>{homeLabel}</a>
     <span aria-hidden="true">/</span>
     <span aria-current="page">{labels.title}</span>
   </nav>

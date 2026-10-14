@@ -6,6 +6,7 @@ import { loadLocalizedWebsiteContent } from '../../i18n/content-loader';
 import { SUPPORTED_LOCALES, type Locale } from '../../i18n/locales';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import { localizedPageHref, sitePagePlan } from '../../site-structure';
+import { withBasePath } from '../../site-path';
 
 interface Props {
   locale: Locale;
@@ -82,7 +83,7 @@ const fallbackLanguage = (path: string) => (
       featuredEvent && featuredEvent.data.entryType === 'event'
         ? {
             data: featuredEvent.data,
-            href: `/${locale}/events/${featuredEvent.id}/`,
+            href: withBasePath(`/${locale}/events/${featuredEvent.id}/`),
             label: site.hero.featuredEventLabel ?? site.events.eyebrow,
             linkLabel: site.hero.featuredEventLinkLabel ?? site.events.viewEventLabel,
             upcomingLabel: site.events.upcomingLabel,

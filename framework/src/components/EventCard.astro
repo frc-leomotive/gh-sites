@@ -1,5 +1,6 @@
 ---
 import type { EventContent, SiteContent } from '../content-schema';
+import { withBasePath } from '../site-path';
 import type { Locale } from '../i18n/locales';
 import { getEventStatus } from '../scripts/event-status';
 
@@ -30,10 +31,10 @@ const statusLabel = status === 'past'
   data-event-ongoing-label={labels.ongoingLabel}
   data-event-past-label={labels.pastLabel}
 >
-  <a class="event-card__link" href={`/${locale}/events/${id}/`}>
+  <a class="event-card__link" href={withBasePath(`/${locale}/events/${id}/`)}>
     <figure class="event-card__media">
       <img
-        src={event.cover.src}
+        src={withBasePath(event.cover.src)}
         alt={event.cover.alt}
         width={event.cover.intrinsicWidth}
         height={event.cover.intrinsicHeight}
