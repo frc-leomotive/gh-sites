@@ -37,7 +37,7 @@ jobs:
           repository: frc-leomotive/gh-sites-content
           ref: production
           path: source/site-content
-          token: ${{ secrets.PRIVATE_DEPLOYMENT_TRIGGER_TOKEN }}
+          ssh-key: ${{ secrets.PRIVATE_CONTENT_DEPLOY_KEY }}
           persist-credentials: false
           lfs: false
 
