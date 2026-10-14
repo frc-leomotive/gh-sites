@@ -4,10 +4,9 @@
 
 **The public website codebase and reusable team-site template for GHFRC — every long-lived branch is deployed live.**
 
-[**Stable site**](https://frc-leomotive.github.io/gh-sites/stable/) ·
+[**Stable site**](https://frc-leomotive.github.io/gh-sites/) ·
 [Preview site](https://frc-leomotive.github.io/gh-sites/preview/) ·
 [Template demo](https://frc-leomotive.github.io/gh-sites/template/) ·
-[Site directory](https://frc-leomotive.github.io/gh-sites/) ·
 [Production website](https://ghfrc.pages.dev)
 
 GHFRC Website is the public website codebase and a reusable website template. Framework development, skins, branches, Pull Requests, Issues, and engineering history are maintained in this repository.
@@ -28,11 +27,11 @@ The example content of each long-lived branch is published automatically to GitH
 
 | Branch | Deployment |
 | --- | --- |
-| `stable` | <https://frc-leomotive.github.io/gh-sites/stable/> |
+| `stable` | <https://frc-leomotive.github.io/gh-sites/> |
 | `preview` | <https://frc-leomotive.github.io/gh-sites/preview/> |
 | `template` | <https://frc-leomotive.github.io/gh-sites/template/> |
 
-A single workflow, `.github/workflows/deploy-github-pages.yml` (kept identical on all three branches), rebuilds all three sites on every push and publishes them together under the `/gh-sites/` base path. The framework resolves internal links, media, and favicon paths through the configured Astro base path, so the same source renders correctly both at a domain root and under a sub-path.
+The `stable` site is served directly at the Pages root; `/gh-sites/stable/` remains available as an alias. A single workflow, `.github/workflows/deploy-github-pages.yml` (kept identical on all three branches), rebuilds all three sites on every push and publishes them together. The framework resolves internal links, media, and favicon paths through the configured Astro base path, so the same source renders correctly both at a domain root and under a sub-path.
 
 The production website at `https://ghfrc.pages.dev` (custom domain `ghfrc.org`) is built separately: a trusted GitHub Actions workflow in the private content repository combines the latest public `stable` framework with the latest private `stable` content, then uploads only the generated static output to Cloudflare Pages. A public `stable` update securely triggers that private workflow, while a private `stable` update starts it directly.
 

@@ -4,10 +4,9 @@
 
 **GHFRC 公開的網站程式碼庫與可重用的隊伍網站範本——每個長期分支都已線上部署。**
 
-[**穩定版網站**](https://frc-leomotive.github.io/gh-sites/stable/) ·
+[**穩定版網站**](https://frc-leomotive.github.io/gh-sites/) ·
 [預覽版網站](https://frc-leomotive.github.io/gh-sites/preview/) ·
 [範本示範](https://frc-leomotive.github.io/gh-sites/template/) ·
-[網站導覽](https://frc-leomotive.github.io/gh-sites/) ·
 [正式官網](https://ghfrc.pages.dev)
 
 GHFRC 官網是公開的網站程式碼庫，也是可重用的網站範本。框架開發、皮膚、分支、Pull Request、Issue 和工程歷史均在本倉庫中公開維護。
@@ -28,11 +27,11 @@ GHFRC 官網是公開的網站程式碼庫，也是可重用的網站範本。�
 
 | 分支 | 部署地址 |
 | --- | --- |
-| `stable` | <https://frc-leomotive.github.io/gh-sites/stable/> |
+| `stable` | <https://frc-leomotive.github.io/gh-sites/> |
 | `preview` | <https://frc-leomotive.github.io/gh-sites/preview/> |
 | `template` | <https://frc-leomotive.github.io/gh-sites/template/> |
 
-單一工作流 `.github/workflows/deploy-github-pages.yml`（三個分支保持同一份檔案）會在每次推送時重新構建全部三個網站，並統一發佈至 `/gh-sites/` 基礎路徑之下。框架內部連結、媒體和 favicon 路徑都會經過配置的 Astro base 路徑解析，因此同一份原始碼在域名根路徑和子路徑下都能正確呈現。
+`stable` 網站直接部署在 Pages 根路徑，`/gh-sites/stable/` 作為別名保留。單一工作流 `.github/workflows/deploy-github-pages.yml`（三個分支保持同一份檔案）會在每次推送時重新構建全部三個網站並統一發佈。框架內部連結、媒體和 favicon 路徑都會經過配置的 Astro base 路徑解析，因此同一份原始碼在域名根路徑和子路徑下都能正確呈現。
 
 正式官網 `https://ghfrc.pages.dev`（自訂域名 `ghfrc.org`）另行構建：私有內容倉庫中的受信任 GitHub Actions 工作流會將最新公開 `stable` 框架與最新私有 `stable` 內容組合構建，然後僅將產生的靜態產物上載至 Cloudflare Pages。公開 `stable` 更新時會安全觸發該私有工作流，私有 `stable` 更新時則會直接啟動該工作流。
 
