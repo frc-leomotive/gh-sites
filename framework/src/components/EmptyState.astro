@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { withBasePath } from '../site-path';
 
 interface Props {
   state: NonNullable<CollectionEntry<'page'>['data']['emptyState']>;
@@ -16,7 +17,7 @@ const Heading = headingLevel;
   <p>{state.body}</p>
   {
     state.actionLabel && state.actionHref && (
-      <a class="text-link" href={state.actionHref}>
+      <a class="text-link" href={withBasePath(state.actionHref)}>
         <span>{state.actionLabel}</span>
         <span aria-hidden="true">↗</span>
       </a>

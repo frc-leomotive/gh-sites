@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { withBasePath } from '../site-path';
 
 type PageData = CollectionEntry<'page'>['data'];
 type Partner = NonNullable<PageData['partners']>['items'][number];
@@ -14,7 +15,7 @@ const { partner } = Astro.props;
 {
   partner.logo ? (
     <img
-      src={partner.logo.src}
+      src={withBasePath(partner.logo.src)}
       alt={partner.logo.alt}
       width={partner.logo.intrinsicWidth}
       height={partner.logo.intrinsicHeight}

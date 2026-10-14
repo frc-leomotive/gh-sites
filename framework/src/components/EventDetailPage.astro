@@ -2,6 +2,7 @@
 import type { EventContent, SiteContent } from '../content-schema';
 import type { Locale } from '../i18n/locales';
 import { getEventStatus } from '../scripts/event-status';
+import { withBasePath } from '../site-path';
 
 interface Props {
   breadcrumbLabel: string;
@@ -32,9 +33,9 @@ const statusLabel = status === 'past'
 
 <main class="event-detail" id="main-content">
   <nav class="site-page__breadcrumb" aria-label={breadcrumbLabel} lang={breadcrumbLanguage}>
-    <a href={`/${locale}/`} lang={homeLabelLanguage}>{homeLabel}</a>
+    <a href={withBasePath(`/${locale}/`)} lang={homeLabelLanguage}>{homeLabel}</a>
     <span aria-hidden="true">/</span>
-    <a href={`/${locale}/events/`}>{labels.title}</a>
+    <a href={withBasePath(`/${locale}/events/`)}>{labels.title}</a>
     <span aria-hidden="true">/</span>
     <span aria-current="page">{event.title}</span>
   </nav>
@@ -60,7 +61,7 @@ const statusLabel = status === 'past'
       <figure class="event-detail__visual">
         <img
           class="event-detail__backdrop"
-          src={event.cover.src}
+          src={withBasePath(event.cover.src)}
           alt=""
           width={event.cover.intrinsicWidth}
           height={event.cover.intrinsicHeight}
@@ -68,7 +69,7 @@ const statusLabel = status === 'past'
         />
         <img
           class="event-detail__artwork"
-          src={event.cover.src}
+          src={withBasePath(event.cover.src)}
           alt={event.cover.alt}
           width={event.cover.intrinsicWidth}
           height={event.cover.intrinsicHeight}

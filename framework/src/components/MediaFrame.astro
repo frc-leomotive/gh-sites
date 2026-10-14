@@ -1,6 +1,7 @@
 ---
 import PlaceholderBlock from './PlaceholderBlock.astro';
 import { isVideoMedia, type MediaReference } from '../media-reference';
+import { withBasePath } from '../site-path';
 
 interface Props {
   media?: MediaReference;
@@ -28,8 +29,8 @@ const {
     <figure class="media-frame">
       {isVideoMedia(media) ? (
         <video
-          src={media.src}
-          poster={media.poster}
+          src={withBasePath(media.src)}
+          poster={withBasePath(media.poster ?? '')}
           width={media.intrinsicWidth}
           height={media.intrinsicHeight}
           preload={eager ? 'metadata' : 'none'}
@@ -41,7 +42,7 @@ const {
           {media.captions?.map((caption) => (
             <track
               kind="captions"
-              src={caption.src}
+              src={withBasePath(caption.src)}
               srclang={caption.srclang}
               label={caption.label}
               default={caption.default}
@@ -51,7 +52,7 @@ const {
         </video>
       ) : (
         <img
-          src={media.src}
+          src={withBasePath(media.src)}
           alt={media.alt}
           lang={mediaTextLanguage}
           width={media.intrinsicWidth}

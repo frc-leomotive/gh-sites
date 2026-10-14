@@ -7,6 +7,7 @@ import {
   TRADITIONAL_CHINESE_REGIONS,
   type Locale,
 } from '../i18n/locales';
+import { siteBasePath, stripBasePath, withBasePath } from '../site-path';
 
 export const LANGUAGE_STORAGE_KEY = 'site-template-language';
 export const AUTOMATIC_LANGUAGE_QUERY_KEY = '__site-template_auto_language';
@@ -25,7 +26,7 @@ export function buildLanguageSwitchPath(
   const localePathPattern = new RegExp(
     `^/(?:${SUPPORTED_LOCALES.join('|')})(?=/|$)`,
   );
-  const pathWithoutLocale = currentPathname.replace(localePathPattern, '');
+  const pathWithoutLocale = stripBasePath(currentPathname).replace(localePathPattern, '');
   const pathname =
     pathWithoutLocale === ''
       ? '/'
@@ -33,7 +34,7 @@ export function buildLanguageSwitchPath(
         ? pathWithoutLocale
         : `/${pathWithoutLocale}`;
 
-  return `/${targetLocale}${pathname}${currentHash}`;
+  return withBasePath(`/${targetLocale}${pathname}`) + currentHash;
 }
 
 export function initializeLanguageSwitchLinks(
@@ -133,10 +134,15 @@ export function createLanguageRedirectScript(
       }
     }
 
+    var basePath = ${JSON.stringify(siteBasePath)};
     var pathname = window.location.pathname || '/';
 
     if (pathname.charAt(0) !== '/') {
       pathname = '/' + pathname;
+    }
+
+    if (basePath && pathname.indexOf(basePath) === 0) {
+      pathname = pathname.slice(basePath.length) || '/';
     }
 
     var searchParams = new URLSearchParams(window.location.search);
@@ -144,7 +150,7 @@ export function createLanguageRedirectScript(
     var localizedSearch = searchParams.toString();
 
     window.location.replace(
-      '/' + locale + pathname +
+      basePath + '/' + locale + pathname +
       (localizedSearch ? '?' + localizedSearch : '') +
       window.location.hash
     );

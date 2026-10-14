@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { resolve, sep } from 'node:path';
+import { withBasePath } from './site-path';
 
 type FaviconVariant = 'light' | 'dark';
 
@@ -38,5 +39,5 @@ export async function versionFavicon(
     .slice(0, FAVICON_HASH_LENGTH);
 
   assetUrl.searchParams.set('favicon', `${revision}-${variant}`);
-  return `${assetUrl.pathname}${assetUrl.search}${assetUrl.hash}`;
+  return withBasePath(`${assetUrl.pathname}${assetUrl.search}${assetUrl.hash}`);
 }

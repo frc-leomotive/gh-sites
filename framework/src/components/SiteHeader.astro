@@ -2,6 +2,7 @@
 import NavigationList from './NavigationList.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import type { HtmlLanguage, Locale } from '../i18n/locales';
+import { withBasePath } from '../site-path';
 
 interface NavigationItem {
   href: string;
@@ -59,13 +60,13 @@ const {
   <div class="site-header__inner">
     <a
       class="site-header__brand"
-      href={homeHref}
+      href={withBasePath(homeHref)}
       aria-label={homeLinkLabel}
       lang={homeLinkLanguage}
       data-home-link
     >
       <img
-        src={logo.src}
+        src={withBasePath(logo.src)}
         alt={logo.alt}
         lang={logoAltLanguage}
         width={logo.intrinsicWidth}

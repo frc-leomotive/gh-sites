@@ -1,5 +1,6 @@
 ---
 import { createLanguageRedirectScript } from '../scripts/language-preference';
+import { withBasePath } from '../site-path';
 
 interface Props {
   pagePath?: string;
@@ -7,9 +8,9 @@ interface Props {
 
 const { pagePath = '' } = Astro.props;
 const normalizedPagePath = pagePath ? `${pagePath.replace(/^\/+|\/+$/g, '')}/` : '';
-const englishHref = `/en/${normalizedPagePath}${Astro.url.search}${Astro.url.hash}`;
-const simplifiedChineseHref = `/zh-cn/${normalizedPagePath}${Astro.url.search}${Astro.url.hash}`;
-const traditionalChineseHref = `/zh-hant/${normalizedPagePath}${Astro.url.search}${Astro.url.hash}`;
+const englishHref = withBasePath(`/en/${normalizedPagePath}`) + `${Astro.url.search}${Astro.url.hash}`;
+const simplifiedChineseHref = withBasePath(`/zh-cn/${normalizedPagePath}`) + `${Astro.url.search}${Astro.url.hash}`;
+const traditionalChineseHref = withBasePath(`/zh-hant/${normalizedPagePath}`) + `${Astro.url.search}${Astro.url.hash}`;
 ---
 
 <!doctype html>

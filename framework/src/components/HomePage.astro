@@ -3,6 +3,7 @@ import type { EventContent, PageContent, SiteContent } from '../content-schema';
 import type { SitePageId } from '../site-structure';
 import MediaFrame from './MediaFrame.astro';
 import { getEventStatus } from '../scripts/event-status';
+import { withBasePath } from '../site-path';
 
 interface HomePageItem {
   id: SitePageId;
@@ -125,7 +126,7 @@ const fallbackLanguage = (
           <figure class="home-event-hero__media">
             <img
               class="home-event-hero__backdrop"
-              src={featuredEvent.data.cover.src}
+              src={withBasePath(featuredEvent.data.cover.src)}
               alt=""
               width={featuredEvent.data.cover.intrinsicWidth}
               height={featuredEvent.data.cover.intrinsicHeight}
@@ -133,7 +134,7 @@ const fallbackLanguage = (
             />
             <img
               class="home-event-hero__artwork"
-              src={featuredEvent.data.cover.src}
+              src={withBasePath(featuredEvent.data.cover.src)}
               alt={featuredEvent.data.cover.alt}
               width={featuredEvent.data.cover.intrinsicWidth}
               height={featuredEvent.data.cover.intrinsicHeight}
@@ -185,7 +186,7 @@ const fallbackLanguage = (
             <p lang={fallbackLanguage(fallbackPaths, 'home.summary')}>{page.home.summary}</p>
             <a
               class="text-link"
-              href={href}
+              href={withBasePath(href)}
               lang={fallbackLanguage(fallbackPaths, 'home.linkLabel')}
             >
               <span>{page.home.linkLabel}</span>
@@ -194,7 +195,7 @@ const fallbackLanguage = (
           </div>
           <a
             class="home-showcase__media-link"
-            href={href}
+            href={withBasePath(href)}
             aria-label={page.home.title}
             lang={fallbackLanguage(fallbackPaths, 'home.title')}
           >

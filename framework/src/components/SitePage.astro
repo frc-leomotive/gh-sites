@@ -6,6 +6,7 @@ import type { Locale } from '../i18n/locales';
 import EmptyState from './EmptyState.astro';
 import MediaFrame from './MediaFrame.astro';
 import PartnerMark from './PartnerMark.astro';
+import { withBasePath } from '../site-path';
 
 interface Props {
   page: PageContent;
@@ -74,7 +75,7 @@ const fallbackGroupLanguage = (prefix: string) => (
     aria-label={breadcrumbLabel}
     lang={breadcrumbLanguage}
   >
-    <a href={`/${locale}/`} lang={homeLabelLanguage}>{homeLabel}</a>
+    <a href={withBasePath(`/${locale}/`)} lang={homeLabelLanguage}>{homeLabel}</a>
     <span aria-hidden="true">/</span>
     <span aria-current="page" lang={fieldLanguage('hero.title')}>{page.hero.title}</span>
   </nav>
@@ -269,7 +270,7 @@ const fallbackGroupLanguage = (prefix: string) => (
                   {method.label}
                 </dt>
                 <dd lang={fieldLanguage(`contactMethods[id=${method.id}].value`)}>
-                  {method.href ? <a href={method.href}>{method.value}</a> : method.value}
+                  {method.href ? <a href={withBasePath(method.href)}>{method.value}</a> : method.value}
                 </dd>
               </div>
             ))}
