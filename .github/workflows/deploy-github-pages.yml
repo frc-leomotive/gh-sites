@@ -1,9 +1,11 @@
-name: Deploy website to GitHub Pages
+name: Deploy websites to GitHub Pages
 
 on:
   push:
     branches:
       - stable
+      - preview
+      - template
   workflow_dispatch:
 
 concurrency:
@@ -17,33 +19,96 @@ permissions:
 
 jobs:
   build:
-    name: Build website for GitHub Pages
+    name: Build stable, preview, and template websites
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
-      - name: Check out repository
+      - name: Check out stable branch
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: stable
+          path: source/stable
+          persist-credentials: false
+
+      - name: Check out preview branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: preview
+          path: source/preview
+          persist-credentials: false
+
+      - name: Check out template branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: template
+          path: source/template
+          persist-credentials: false
 
       - name: Set up Node
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          node-version-file: .node-version
+          node-version-file: source/stable/.node-version
           cache: npm
+          cache-dependency-path: |
+            source/stable/package-lock.json
+            source/preview/package-lock.json
+            source/template/package-lock.json
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Build stable website
+        working-directory: source/stable
+        run: |
+          npm ci
+          npm run prepare:content
+          npm --workspace @gh-frc/framework run build -- --base /gh-sites/stable/
 
-      - name: Prepare content
-        run: npm run prepare:content
+      - name: Build preview website
+        working-directory: source/preview
+        run: |
+          npm ci
+          npm run prepare:content
+          npm --workspace @gh-frc/framework run build -- --base /gh-sites/preview/
 
-      - name: Build website with GitHub Pages base path
-        run: npm --workspace @gh-frc/framework run build -- --base /gh-sites/
+      - name: Build template website
+        working-directory: source/template
+        run: |
+          npm ci
+          npm run prepare:content
+          npm run check:translations
+          npm --workspace @site-template/framework run build -- --base /gh-sites/template/
+
+      - name: Assemble combined website
+        run: |
+          mkdir -p site
+          cp -r source/stable/framework/dist site/stable
+          cp -r source/preview/framework/dist site/preview
+          cp -r source/template/framework/dist site/template
+          cat > site/index.html <<'HTML'
+          <!doctype html>
+          <html lang="zh-CN">
+            <head>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <meta name="robots" content="noindex" />
+              <title>GHFRC 站点导航</title>
+            </head>
+            <body>
+              <main>
+                <h1>GHFRC 站点导航</h1>
+                <ul>
+                  <li><a href="/gh-sites/stable/">stable（稳定版）</a></li>
+                  <li><a href="/gh-sites/preview/">preview（预览版）</a></li>
+                  <li><a href="/gh-sites/template/">template（模板）</a></li>
+                </ul>
+              </main>
+            </body>
+          </html>
+          HTML
 
       - name: Upload website artifact
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
         with:
-          path: framework/dist
+          path: site
 
   deploy:
     name: Deploy to GitHub Pages
